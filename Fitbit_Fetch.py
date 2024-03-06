@@ -43,6 +43,8 @@ SERVER_ERROR_MAX_RETRY = 3
 EXPIRED_TOKEN_MAX_RETRY = 5
 SKIP_REQUEST_ON_SERVER_ERROR = True
 
+HEALTHCHECKS_UUID = os.environ.get("HEALTHCHECKS_UUID") or ""
+
 # %% [markdown]
 # ## Logging setup
 
@@ -649,5 +651,6 @@ if SCHEDULE_AUTO_UPDATE:
         time.sleep(30)
         update_working_dates()
         
-
-
+        if HEALTHCHECKS_UUID:
+            logging.info("Pinging Healthchecks.io")
+            requests.get(f"https://hc-ping.com/{HEALTHCHECKS_UUID}")
